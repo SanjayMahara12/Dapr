@@ -1,12 +1,9 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
-EXPOSE 5274
+EXPOSE 80
+EXPOSE 443
 
-ENV ASPNETCORE_URLS=http://+:5274
-
-USER app
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG configuration=Release
+FROM  mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY ["MyFrontEnd/MyFrontEnd.csproj", "MyFrontEnd/"]
 RUN dotnet restore "MyFrontEnd/MyFrontEnd.csproj"
@@ -15,7 +12,6 @@ WORKDIR "/src/MyFrontEnd"
 RUN dotnet build "MyFrontEnd.csproj" -c $configuration -o /app/build
 
 FROM build AS publish
-ARG configuration=Release
 RUN dotnet publish "MyFrontEnd.csproj" -c $configuration -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
