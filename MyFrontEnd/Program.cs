@@ -1,5 +1,16 @@
+using System.Text.Json;
+
 var builder = WebApplication.CreateBuilder(args);
 
+var jsonOptions = new JsonSerializerOptions()
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                PropertyNameCaseInsensitive = true,
+            };
+
+builder.Services.AddDaprClient(client=> {
+client.UseJsonSerializationOptions(jsonOptions);
+});
 // Add services to the container.
 builder.Services.AddRazorPages();
 
