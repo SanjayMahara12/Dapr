@@ -1,0 +1,22 @@
+﻿@page "/counter"
+@inject DaprClient dapr
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@code {
+    private int currentCount = 0;
+    const string storeName="statestore";
+    const string key="counter";
+    private  async void  IncrementCount()
+    {
+        var counter = await dapr.GetStateAsync<int>(storeName,key);
+        currentCount=counter++;
+        await dapr.SaveStateAsync(storeName,key,counter);
+        //await Task.Delay(1000);
+    }
+}
