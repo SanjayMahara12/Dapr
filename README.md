@@ -26,6 +26,3 @@ dapr run --app-id frontend --app-port 5005 -- dotnet run
 run command "dapr dashboard"
 //this is to get a dapr UI interface to view and control the dapr sidecar apps
 
-----------------------------------
- Tye
-----------------------------------
